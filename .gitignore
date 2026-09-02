@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+package-lock.json
+drishwebsite-main-v2.zip
+drishwebsite-main-v2.zip

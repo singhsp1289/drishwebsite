@@ -1,0 +1,132 @@
+import { pgTable, serial, text, boolean, integer, jsonb, timestamp } from 'drizzle-orm/pg-core';
+
+export const services = pgTable('services', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  badge: text('badge').notNull().default('Engineering Service'),
+  tagline: text('tagline'),
+  shortDescription: text('short_description').notNull(),
+  fullDescription: text('full_description'),
+  icon: text('icon').notNull().default('Code2'),
+  color: text('color').default('hover:border-[#0876B9]'),
+  order: integer('order').notNull().default(0),
+  isActive: boolean('is_active').notNull().default(true),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  heroHighlights: jsonb('hero_highlights').$type<string[]>().default([]),
+  pillars: jsonb('pillars').$type<Array<{ title: string; desc: string; icon?: string }>>().default([]),
+  outcomes: jsonb('outcomes').$type<Array<{ metric: string; desc: string; label?: string }>>().default([]),
+  techStack: jsonb('tech_stack').$type<Array<{ category: string; tools: string[] }>>().default([]),
+  methodologySteps: jsonb('methodology_steps').$type<Array<{ step: string; title: string; desc: string }>>().default([]),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const industries = pgTable('industries', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  name: text('name').notNull(),
+  badge: text('badge').default('Industry Practice'),
+  tagline: text('tagline'),
+  shortDescription: text('short_description').notNull(),
+  fullDescription: text('full_description'),
+  compliance: text('compliance'),
+  image: text('image'),
+  icon: text('icon').notNull().default('Activity'),
+  order: integer('order').notNull().default(0),
+  isActive: boolean('is_active').notNull().default(true),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  outcomes: jsonb('outcomes').$type<Array<{ stat: string; label: string }>>().default([]),
+  capabilities: jsonb('capabilities').$type<Array<{ title: string; desc: string }>>().default([]),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const technologies = pgTable('technologies', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  category: text('category').notNull(),
+  role: text('role').notNull(),
+  description: text('description').notNull(),
+  icon: text('icon'),
+  order: integer('order').notNull().default(0),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const caseStudies = pgTable('case_studies', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  title: text('title').notNull(),
+  client: text('client').notNull(),
+  industry: text('industry').notNull(),
+  description: text('description').notNull(),
+  challenge: text('challenge'),
+  solution: text('solution'),
+  results: text('results'),
+  technologies: jsonb('technologies').$type<string[]>().default([]),
+  metrics: jsonb('metrics').$type<Array<{ label: string; metric: string }>>().default([]),
+  image: text('image'),
+  isFeatured: boolean('is_featured').notNull().default(false),
+  isPublished: boolean('is_published').notNull().default(true),
+  order: integer('order').notNull().default(0),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const testimonials = pgTable('testimonials', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').notNull().unique(),
+  clientName: text('client_name').notNull(),
+  companyName: text('company_name').notNull(),
+  role: text('role'),
+  region: text('region'),
+  quote: text('quote').notNull(),
+  rating: integer('rating').notNull().default(5),
+  logoSvg: text('logo_svg'),
+  avatarUrl: text('avatar_url'),
+  order: integer('order').notNull().default(0),
+  isActive: boolean('is_active').notNull().default(true),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const inquiries = pgTable('inquiries', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  phone: text('phone'),
+  company: text('company'),
+  serviceInterest: text('service_interest'),
+  message: text('message').notNull(),
+  status: text('status').notNull().default('new'),
+  notes: text('notes'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const siteSettings = pgTable('site_settings', {
+  id: serial('id').primaryKey(),
+  key: text('key').notNull().unique(),
+  value: jsonb('value').notNull(),
+  category: text('category').notNull().default('general'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  uid: text('uid').notNull().unique(),
+  username: text('username').unique(),
+  email: text('email').notNull(),
+  passwordHash: text('password_hash'),
+  displayName: text('display_name'),
+  photoUrl: text('photo_url'),
+  role: text('role').notNull().default('admin'),
+  mustChangePassword: boolean('must_change_password').default(false),
+  isActive: boolean('is_active').default(true),
+  lastLogin: timestamp('last_login'),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
